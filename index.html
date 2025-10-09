@@ -12,9 +12,27 @@
 </head>
 <body>
     <div id="app">
-        <h1>Available Lessons</h1>
+        <div class="header">
+            <h1>Available Lessons</h1>
+            <div class="controls">
+                <div class="sort-controls">
+                    <label for="sortAttribute">Sort by:</label>
+                    <select v-model="sortAttribute" id="sortAttribute">
+                        <option value="subject">Subject</option>
+                        <option value="location">Location</option>
+                        <option value="price">Price</option>
+                        <option value="spaces">Spaces Left</option>
+                    </select>
+                    <label for="sortOrder">Order:</label>
+                    <select v-model="sortOrder" id="sortOrder">
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </div>
+            </div>
+        </div>
         <div class="lesson-feed">
-            <div v-for="lesson in lessons" :key="lesson.subject" class="lesson-card">
+            <div v-for="lesson in filteredLessons" :key="lesson.subject" class="lesson-card">
                 <div class="lesson-icon">
                     <i :class="lesson.icon"></i>
                 </div>
@@ -25,7 +43,6 @@
             </div>
         </div>
     </div>
-
     <script src="front.js"></script>
 </body>
 </html>
