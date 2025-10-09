@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,9 +11,16 @@
     <!-- Vue.js CDN -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 </head>
+
 <body>
     <div id="app">
-        <div class="header">
+        <!-- Cart Toggle Button -->
+        <button class="cart-toggle" :disabled="cart.length === 0" @click="toggleCartPage">
+            <i class="fas fa-shopping-cart"></i> Cart ({{ cart.length }})
+        </button>
+
+        <!-- Lesson Page -->
+        <div v-if="!showCartPage" class="header">
             <h1>Available Lessons</h1>
             <div class="controls">
                 <div class="sort-controls">
@@ -30,19 +38,52 @@
                     </select>
                 </div>
             </div>
-        </div>
-        <div class="lesson-feed">
-            <div v-for="lesson in filteredLessons" :key="lesson.subject" class="lesson-card">
-                <div class="lesson-icon">
-                    <i :class="lesson.icon"></i>
+            <div class="lesson-feed">
+                <div v-for="lesson in filteredLessons" :key="lesson.subject" class="lesson-card">
+                    <div class="lesson-icon">
+                        <i :class="lesson.icon"></i>
+                    </div>
+                    <div class="lesson-info"><strong>Subject:</strong> {{ lesson.subject }}</div>
+                    <div class="lesson-info"><strong>Location:</strong> {{ lesson.location }}</div>
+                    <div class="lesson-info"><strong>Price:</strong> ${{ lesson.price }}</div>
+                    <div class="lesson-info"><strong>Spaces Left:</strong> {{ lesson.spaces }}</div>
+                    <button :disabled="lesson.spaces <= 0" @click="addToCart(lesson)">
+                        Add to Cart
+                    </button>
                 </div>
-                <div class="lesson-info"><strong>Subject:</strong> {{ lesson.subject }}</div>
-                <div class="lesson-info"><strong>Location:</strong> {{ lesson.location }}</div>
-                <div class="lesson-info"><strong>Price:</strong> ${{ lesson.price }}</div>
-                <div class="lesson-info"><strong>Spaces Left:</strong> {{ lesson.spaces }}</div>
+            </div>
+        </div>
+
+        <!-- Cart Page -->
+        <div v-if="showCartPage" class="cart-view">
+            <h1>Shopping Cart</h1>
+            <button @click="toggleCartPage" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back to Lessons
+            </button>
+            <div v-if="cart.length === 0" class="cart-empty">
+                <p>Your cart is empty</p>
+                <button @click="toggleCartPage" class="back-button">Browse Lessons</button>
+            </div>
+            <div v-else class="cart-content">
+                <div v-for="item in cart" :key="item.subject" class="cart-entry">
+                    <div class="cart-info">
+                        <i :class="item.icon" style="color:#007bff; font-size:1.5em;"></i>
+                        <strong>{{ item.subject }}</strong>
+                        <span>Location: {{ item.location }}</span>
+                        <span>Price: ${{ item.price }}</span>
+                        <span>Spaces Booked: {{ item.spaces }}</span>
+                    </div>
+                    <button @click="removeFromCart(item.subject)" class="remove-button">
+                        Remove
+                    </button>
+                </div>
+                <div class="cart-total">
+                    <strong>Total Items: {{ totalCartItems }}</strong>
+                </div>
             </div>
         </div>
     </div>
     <script src="front.js"></script>
 </body>
+
 </html>
