@@ -1,0 +1,23 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.lesson-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 8px;
+    width: 300px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.lesson-icon {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.lesson-info {
+    margin: 5px 0;
+}
