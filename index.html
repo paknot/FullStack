@@ -13,8 +13,7 @@
 <body>
     <div id="app">
         <h1>Available Lessons</h1>
-
-        <div class="lesson-list">
+        <div class="lesson-feed">
             <div v-for="lesson in lessons" :key="lesson.subject" class="lesson-card">
                 <div class="lesson-icon">
                     <i :class="lesson.icon"></i>
