@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LessonMaX</title>
-    <!--  Font Awesome  -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <!-- Vue.js CDN -->
@@ -45,7 +45,7 @@
                     </div>
                     <div class="lesson-info"><strong>Subject:</strong> {{ lesson.subject }}</div>
                     <div class="lesson-info"><strong>Location:</strong> {{ lesson.location }}</div>
-                    <div class="lesson-info"><strong>Price:</strong> ${{ lesson.price }}</div>
+                    <div class="lesson-info"><strong>Price:</strong> £{{ lesson.price }}</div>
                     <div class="lesson-info"><strong>Spaces Left:</strong> {{ lesson.spaces }}</div>
                     <button :disabled="lesson.spaces <= 0" @click="addToCart(lesson)">
                         Add to Cart
@@ -79,6 +79,26 @@
                 </div>
                 <div class="cart-total">
                     <strong>Total Items: {{ totalCartItems }}</strong>
+                    <strong style="margin-left: 20px;">Total Price: £{{ totalCartPrice }}</strong>
+                </div>
+                <div class="checkout-section">
+                    <h2>Checkout</h2>
+                    <div class="checkout-form">
+                        <label for="customerName">Name:</label>
+                        <input id="customerName" v-model="customerName" placeholder="Enter your name" />
+                        <label for="customerPhone">Phone:</label>
+                        <input id="customerPhone" v-model="customerPhone" placeholder="Enter 10-digit phone number" />
+                        <button class="checkout-button" :disabled="!isCheckoutValid" @click="submitOrder">
+                            Checkout
+                        </button>
+                        <div v-if="showConfirmationPopup" class="popup-overlay">
+                            <div class="popup-box">
+                                <h2>Order Confirmed ✅</h2>
+                                <p>{{ orderConfirmation }}</p>
+                            </div>
+                        </div>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

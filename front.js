@@ -19,21 +19,21 @@ createApp({
             sortAttribute: 'subject',
             sortOrder: 'asc',
             cart: [],
-            showCartPage: false
+            showCartPage: false,
+            customerName: '',
+            customerPhone: '',
+            showConfirmationPopup: false,
+            orderConfirmation: ''
         };
     },
     computed: {
         filteredLessons() {
-            // Filter lessons based on search query
             let filtered = this.lessons.filter(lesson =>
                 lesson.subject.toLowerCase().includes(this.searchQuery.toLowerCase())
             );
-
-            // Sort lessons based on selected attribute and order
             return filtered.sort((a, b) => {
                 let valueA = a[this.sortAttribute];
                 let valueB = b[this.sortAttribute];
-
                 if (this.sortAttribute === 'price' || this.sortAttribute === 'spaces') {
                     valueA = Number(valueA);
                     valueB = Number(valueB);
@@ -41,22 +41,30 @@ createApp({
                     valueA = valueA.toLowerCase();
                     valueB = valueB.toLowerCase();
                 }
-
                 const comparison = valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
                 return this.sortOrder === 'asc' ? comparison : -comparison;
             });
         },
         totalCartItems() {
             return this.cart.reduce((total, item) => total + item.spaces, 0);
+        },
+        isCheckoutValid() {
+            const nameRegex = /^[A-Za-z\s]+$/;
+            const phoneRegex = /^[0-9]{10}$/; 
+            return (
+                this.cart.length > 0 &&
+                nameRegex.test(this.customerName.trim()) &&
+                phoneRegex.test(this.customerPhone.trim())
+            );
+        },
+        totalCartPrice() {
+            return this.cart.reduce((sum, item) => sum + item.price * item.spaces, 0);
         }
     },
     methods: {
         addToCart(lesson) {
             if (lesson.spaces > 0) {
-                // Reduce spaces by 1
                 lesson.spaces -= 1;
-
-                // Find if lesson is already in cart
                 const cartItem = this.cart.find(item => item.subject === lesson.subject);
                 if (cartItem) {
                     cartItem.spaces += 1;
@@ -72,24 +80,35 @@ createApp({
             }
         },
         removeFromCart(subject) {
-            // Find the item
             const cartItemIndex = this.cart.findIndex(item => item.subject === subject);
             if (cartItemIndex !== -1) {
                 const cartItem = this.cart[cartItemIndex];
-
-                // Find the  lesson
                 const lesson = this.lessons.find(l => l.subject === subject);
                 if (lesson) {
-                    // Restore spaces 
                     lesson.spaces += cartItem.spaces;
                 }
-
-                // Remove the item from cart
                 this.cart.splice(cartItemIndex, 1);
             }
         },
         toggleCartPage() {
             this.showCartPage = !this.showCartPage;
+        },
+        submitOrder() {
+            if (this.isCheckoutValid) {
+                this.showConfirmationPopup = true; 
+                this.orderConfirmation = `Thank you, ${this.customerName}! Your order has been placed successfully.`;
+
+                // time to hide the confirmation
+                setTimeout(() => {
+                    this.cart = [];
+                    this.customerName = '';
+                    this.customerPhone = '';
+                    this.showConfirmationPopup = false;
+                    this.showCartPage = false; 
+                }, 3000);
+            } else {
+                alert('Please enter a valid name and 10-digit phone number before checking out.');
+            }
         }
     }
 }).mount('#app');
