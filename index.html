@@ -14,7 +14,7 @@
     <div id="app">
         <!-- Cart Toggle Button -->
         <button class="cart-toggle" :disabled="cart.length === 0" @click="toggleCartPage">
-            <i class="fas fa-shopping-cart"></i> Cart ({{ totalCartItems }})
+            <i class="fas fa-shopping-cart"></i> 🛒 Cart ({{ totalCartItems }})
         </button>
 
         <!-- Lesson Page -->
@@ -72,7 +72,7 @@
                         <span>Price: £{{ item.price }}</span>
                         <span>Spaces Booked: {{ item.spaces }}</span>
                     </div>
-                    <button @click="removeFromCart(item.subject)" class="remove-button">
+                    <button @click="removeFromCart(item._id)" class="remove-button">
                         Remove
                     </button>
                 </div>
