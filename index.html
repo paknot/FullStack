@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LessonMaX</title>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <!-- Vue.js CDN -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
@@ -16,7 +14,7 @@
     <div id="app">
         <!-- Cart Toggle Button -->
         <button class="cart-toggle" :disabled="cart.length === 0" @click="toggleCartPage">
-            <i class="fas fa-shopping-cart"></i> Cart ({{ cart.length }})
+            <i class="fas fa-shopping-cart"></i> Cart ({{ totalCartItems }})
         </button>
 
         <!-- Lesson Page -->
@@ -39,9 +37,10 @@
                 </div>
             </div>
             <div class="lesson-feed">
-                <div v-for="lesson in filteredLessons" :key="lesson.subject" class="lesson-card">
-                    <div class="lesson-icon">
-                        <i :class="lesson.icon"></i>
+                <div v-for="lesson in filteredLessons" :key="lesson._id" class="lesson-card">
+                    <div class="lesson-image-container">
+                        <img :src="lesson.imageUrl" alt="Lesson image" class="lesson-image"
+                            @error="lesson.imageUrl = 'http://localhost:5000/images/default.jpg'">
                     </div>
                     <div class="lesson-info"><strong>Subject:</strong> {{ lesson.subject }}</div>
                     <div class="lesson-info"><strong>Location:</strong> {{ lesson.location }}</div>
@@ -70,7 +69,7 @@
                         <i :class="item.icon" style="color:#007bff; font-size:1.5em;"></i>
                         <strong>{{ item.subject }}</strong>
                         <span>Location: {{ item.location }}</span>
-                        <span>Price: ${{ item.price }}</span>
+                        <span>Price: £{{ item.price }}</span>
                         <span>Spaces Booked: {{ item.spaces }}</span>
                     </div>
                     <button @click="removeFromCart(item.subject)" class="remove-button">
@@ -79,7 +78,8 @@
                 </div>
                 <div class="cart-total">
                     <strong>Total Items: {{ totalCartItems }}</strong>
-                    <strong style="margin-left: 20px;">Total Price: £<span class="price-amount-red">{{ totalCartPrice }}</span></strong>
+                    <strong style="margin-left: 20px;">Total Price: £<span class="price-amount-red">{{ totalCartPrice
+                            }}</span></strong>
                 </div>
                 <div class="checkout-section">
                     <h2>Checkout</h2>

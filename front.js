@@ -63,21 +63,12 @@ createApp({
           location: l.location || '',
           price: l.price || 0,
           spaces: l.space != null ? l.space : 0,
-          icon: this.iconForSubject(l.topic)
+          imageUrl: `http://localhost:5000${l.imageUrl}` // include full path
         }));
+
       } catch (err) {
         console.error('Error loading lessons:', err);
       }
-    },
-    iconForSubject(topic) {
-      if (!topic) return 'fas fa-book';
-      const t = topic.toLowerCase();
-      if (t.includes('math')) return 'fas fa-calculator';
-      if (t.includes('science') || t.includes('chem')) return 'fas fa-flask';
-      if (t.includes('music')) return 'fas fa-music';
-      if (t.includes('chess')) return 'fas fa-chess';
-      if (t.includes('business')) return 'fas fa-briefcase';
-      return 'fas fa-book';
     },
     addToCart(lesson) {
       if (lesson.spaces > 0) {
@@ -110,50 +101,50 @@ createApp({
       this.showCartPage = !this.showCartPage;
     },
     async submitOrder() {
-  if (this.isCheckoutValid) {
-    // Build array of items
-    const items = this.cart.map(item => ({
-      lessonID: item._id,       
-      quantity: item.spaces     
-    }));
+      if (this.isCheckoutValid) {
+        // Build array of items
+        const items = this.cart.map(item => ({
+          lessonID: item._id,
+          quantity: item.spaces
+        }));
 
-    const payload = {
-      name: this.customerName.trim(),
-      phoneNumber: this.customerPhone.trim(),
-      items
-    };
+        const payload = {
+          name: this.customerName.trim(),
+          phoneNumber: this.customerPhone.trim(),
+          items
+        };
 
-    try {
-      const response = await fetch('http://localhost:5000/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
+        try {
+          const response = await fetch('http://localhost:5000/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
 
-      const data = await response.json();
+          const data = await response.json();
 
-      if (!response.ok) throw new Error(data.error || 'Order failed');
+          if (!response.ok) throw new Error(data.error || 'Order failed');
 
-      // Success popup
-      this.showConfirmationPopup = true;
-      this.orderConfirmation = `Thank you, ${this.customerName}! Your order has been placed successfully.`;
+          // Success popup
+          this.showConfirmationPopup = true;
+          this.orderConfirmation = `Thank you, ${this.customerName}! Your order has been placed successfully.`;
 
-      // Reset
-      setTimeout(() => {
-        this.cart = [];
-        this.customerName = '';
-        this.customerPhone = '';
-        this.showConfirmationPopup = false;
-        this.showCartPage = false;
-      }, 3000);
-    } catch (error) {
-      alert(error.message);
-      console.error('Checkout error:', error);
+          // Reset
+          setTimeout(() => {
+            this.cart = [];
+            this.customerName = '';
+            this.customerPhone = '';
+            this.showConfirmationPopup = false;
+            this.showCartPage = false;
+          }, 3000);
+        } catch (error) {
+          alert(error.message);
+          console.error('Checkout error:', error);
+        }
+      } else {
+        alert('Please enter a valid name and 10-digit phone number before checking out.');
+      }
     }
-  } else {
-    alert('Please enter a valid name and 10-digit phone number before checking out.');
-  }
-}
   },
   mounted() {
     this.loadLessons();
