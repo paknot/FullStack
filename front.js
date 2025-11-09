@@ -17,10 +17,7 @@ createApp({
   },
   computed: {
     filteredLessons() {
-      let filtered = this.lessons.filter(lesson =>
-        lesson.subject.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
-      return filtered.sort((a, b) => {
+      return this.lessons.sort((a, b) => {
         let valueA = a[this.sortAttribute];
         let valueB = b[this.sortAttribute];
         if (this.sortAttribute === 'price' || this.sortAttribute === 'spaces') {
@@ -34,6 +31,7 @@ createApp({
         return this.sortOrder === 'asc' ? comparison : -comparison;
       });
     },
+
     totalCartItems() {
       return this.cart.reduce((total, item) => total + item.spaces, 0);
     },
@@ -70,6 +68,23 @@ createApp({
         console.error('Error loading lessons:', err);
       }
     },
+    async searchLessons() {
+      try {
+        const res = await fetch(`http://localhost:5000/api/search?q=${encodeURIComponent(this.searchQuery)}`);
+        if (!res.ok) throw new Error('Search failed');
+        const data = await res.json();
+        this.lessons = data.map(l => ({
+          _id: l._id,
+          subject: l.topic || 'Untitled',
+          location: l.location || '',
+          price: l.price || 0,
+          spaces: l.space != null ? l.space : 0,
+          imageUrl: `http://localhost:5000${l.imageUrl}`
+        }));
+      } catch (err) {
+        console.error('Error performing search:', err);
+      }
+    },
     addToCart(lesson) {
       if (lesson.spaces > 0) {
         lesson.spaces -= 1;
@@ -102,7 +117,6 @@ createApp({
     },
     async submitOrder() {
       if (this.isCheckoutValid) {
-        // Build array of items
         const items = this.cart.map(item => ({
           lessonID: item._id,
           quantity: item.spaces
@@ -122,14 +136,22 @@ createApp({
           });
 
           const data = await response.json();
-
           if (!response.ok) throw new Error(data.error || 'Order failed');
 
-          // Success popup
+          // Update space with PUT
+          for (const item of items) {
+            const lesson = this.lessons.find(l => l._id === item.lessonID);
+            if (lesson) {
+              const newSpace = lesson.spaces;
+              await this.updateLessonSpace(item.lessonID, newSpace);
+            }
+          }
+
+          // Confirmation popup
           this.showConfirmationPopup = true;
           this.orderConfirmation = `Thank you, ${this.customerName}! Your order has been placed successfully.`;
 
-          // Reset
+          // Reset input
           setTimeout(() => {
             this.cart = [];
             this.customerName = '';
@@ -145,6 +167,21 @@ createApp({
         alert('Please enter a valid name and 10-digit phone number before checking out.');
       }
     }
+    ,
+    async updateLessonSpace(lessonId, newSpace) {
+      try {
+        const response = await fetch(`http://localhost:5000/api/lessons/${lessonId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ space: newSpace })
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to update lesson');
+        console.log(`✅ Lesson ${lessonId} space updated to ${newSpace}`);
+      } catch (error) {
+        console.error('Error updating lesson space:', error);
+      }
+    },
   },
   mounted() {
     this.loadLessons();

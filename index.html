@@ -17,9 +17,10 @@
             <i class="fas fa-shopping-cart"></i> 🛒 Cart ({{ totalCartItems }})
         </button>
 
-        <!-- Lesson Page -->
         <div v-if="!showCartPage" class="header">
             <h1>Available Lessons</h1>
+
+            <!-- Controls Row: Sort (left) | Search (right) -->
             <div class="controls">
                 <div class="sort-controls">
                     <label for="sortAttribute">Sort by:</label>
@@ -29,13 +30,22 @@
                         <option value="price">Price</option>
                         <option value="spaces">Spaces Left</option>
                     </select>
+
                     <label for="sortOrder">Order:</label>
                     <select v-model="sortOrder" id="sortOrder">
                         <option value="asc">Ascending</option>
                         <option value="desc">Descending</option>
                     </select>
                 </div>
+                <div class="search-box">
+                    <div class="search-container">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" v-model="searchQuery" placeholder="Search lessons..."
+                            @input="searchLessons" />
+                    </div>
+                </div>
             </div>
+            <!-- Lesson Feed -->
             <div class="lesson-feed">
                 <div v-for="lesson in filteredLessons" :key="lesson._id" class="lesson-card">
                     <div class="lesson-image-container">
