@@ -33,7 +33,7 @@ h1 {
   gap: 15px;
 }
 
-/* Sort Controls (Left) */
+
 .sort-controls {
   display: flex;
   align-items: center;
@@ -63,7 +63,6 @@ h1 {
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
 }
 
-/* Search Box (Right) - Professional with Emoji */
 .search-box .search-container {
   position: relative;
   width: 280px;
@@ -102,7 +101,7 @@ h1 {
   user-select: none;
 }
 
-/* === Responsive === */
+/* Responsivly */
 @media (max-width: 768px) {
   .controls {
     flex-direction: column;
@@ -174,7 +173,7 @@ h1 {
     color: #555;
 }
 
-/* Buttons */
+/* General uttons */
 button {
     background-color: #007bff;
     color: white;
@@ -329,7 +328,7 @@ button:disabled {
 .checkout-button:hover:not(:disabled) {
     background-color: #218838;
 }
-
+/* Popup */
 .popup-overlay {
   position: fixed;
   top: 0;

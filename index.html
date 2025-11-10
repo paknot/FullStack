@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +19,7 @@
         <div v-if="!showCartPage" class="header">
             <h1>Available Lessons</h1>
 
-            <!-- Controls Row: Sort (left) | Search (right) -->
+            <!-- Controls and Search -->
             <div class="controls">
                 <div class="sort-controls">
                     <label for="sortAttribute">Sort by:</label>
@@ -73,6 +72,7 @@
                 <p>Your cart is empty</p>
                 <button @click="toggleCartPage" class="back-button">Browse Lessons</button>
             </div>
+            <!-- Carts contents -->
             <div v-else class="cart-content">
                 <div v-for="item in cart" :key="item.subject" class="cart-entry">
                     <div class="cart-info">
@@ -91,6 +91,7 @@
                     <strong style="margin-left: 20px;">Total Price: £<span class="price-amount-red">{{ totalCartPrice
                             }}</span></strong>
                 </div>
+                <!-- Checkout -->
                 <div class="checkout-section">
                     <h2>Checkout</h2>
                     <div class="checkout-form">
