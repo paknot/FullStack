@@ -49,7 +49,7 @@
                 <div v-for="lesson in filteredLessons" :key="lesson._id" class="lesson-card">
                     <div class="lesson-image-container">
                         <img :src="lesson.imageUrl" alt="Lesson image" class="lesson-image"
-                            @error="lesson.imageUrl = 'http://localhost:5000/images/default.jpg'">
+                            @error="lesson.imageUrl = 'https://backend-netl.onrender.com/images/default.jpg'">
                     </div>
                     <div class="lesson-info"><strong>Subject:</strong> {{ lesson.subject }}</div>
                     <div class="lesson-info"><strong>Location:</strong> {{ lesson.location }}</div>

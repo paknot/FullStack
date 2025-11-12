@@ -1,4 +1,5 @@
 const { createApp } = Vue;
+const BASE_URL = 'https://backend-netl.onrender.com';
 
 createApp({
   data() {
@@ -55,7 +56,7 @@ createApp({
     // Load lessons from backend
     async loadLessons() {
       try {
-        const res = await fetch('http://localhost:5000/api/lessons');
+        const res = await fetch(`${BASE_URL}/api/lessons`);
         if (!res.ok) throw new Error('Failed to fetch lessons');
         const data = await res.json();
         // map backend fields to UI fields. Add a default icon if none.
@@ -65,7 +66,7 @@ createApp({
           location: l.location || '',
           price: l.price || 0,
           spaces: l.space != null ? l.space : 0,
-          imageUrl: `http://localhost:5000${l.imageUrl}` // include full path
+          imageUrl: `${BASE_URL}${l.imageUrl}` // include base URL and image URL
         }));
 
       } catch (err) {
@@ -75,7 +76,7 @@ createApp({
     // Search lessons
     async searchLessons() {
       try {
-        const res = await fetch(`http://localhost:5000/api/search?q=${encodeURIComponent(this.searchQuery)}`);
+        const res = await fetch(`${BASE_URL}/api/search?q=${encodeURIComponent(this.searchQuery)}`);
         if (!res.ok) throw new Error('Search failed');
         const data = await res.json();
         this.lessons = data.map(l => ({
@@ -84,7 +85,7 @@ createApp({
           location: l.location || '',
           price: l.price || 0,
           spaces: l.space != null ? l.space : 0,
-          imageUrl: `http://localhost:5000${l.imageUrl}`
+          imageUrl: `${BASE_URL}${l.imageUrl}`
         }));
       } catch (err) {
         console.error('Error performing search:', err);
@@ -137,7 +138,7 @@ createApp({
         };
 
         try {
-          const response = await fetch('http://localhost:5000/api/orders', {
+          const response = await fetch(`${BASE_URL}/api/orders`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -178,7 +179,7 @@ createApp({
     // Update Lesson with PUT
     async updateLessonSpace(lessonId, newSpace) {
       try {
-        const response = await fetch(`http://localhost:5000/api/lessons/${lessonId}`, {
+        const response = await fetch(`${BASE_URL}/api/lessons/${lessonId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ space: newSpace })
