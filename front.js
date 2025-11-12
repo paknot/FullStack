@@ -16,6 +16,7 @@ createApp({
     };
   },
   computed: {
+    // Filter Lessons
     filteredLessons() {
       return this.lessons.sort((a, b) => {
         let valueA = a[this.sortAttribute];
@@ -31,10 +32,11 @@ createApp({
         return this.sortOrder === 'asc' ? comparison : -comparison;
       });
     },
-
+    // Number of items in cart
     totalCartItems() {
       return this.cart.reduce((total, item) => total + item.spaces, 0);
     },
+    // Validate checkout 
     isCheckoutValid() {
       const nameRegex = /^[A-Za-z\s]+$/;
       const phoneRegex = /^[0-9]{10}$/;
@@ -44,11 +46,13 @@ createApp({
         phoneRegex.test(this.customerPhone.trim())
       );
     },
+    // Total price of cart
     totalCartPrice() {
       return this.cart.reduce((sum, item) => sum + item.price * item.spaces, 0);
     }
   },
   methods: {
+    // Load lessons from backend
     async loadLessons() {
       try {
         const res = await fetch('http://localhost:5000/api/lessons');
@@ -68,6 +72,7 @@ createApp({
         console.error('Error loading lessons:', err);
       }
     },
+    // Search lessons
     async searchLessons() {
       try {
         const res = await fetch(`http://localhost:5000/api/search?q=${encodeURIComponent(this.searchQuery)}`);
@@ -85,6 +90,7 @@ createApp({
         console.error('Error performing search:', err);
       }
     },
+    // Add lesson to cart
     addToCart(lesson) {
       if (lesson.spaces > 0) {
         lesson.spaces -= 1;
@@ -103,6 +109,7 @@ createApp({
         }
       }
     },
+    // Remove lesson from cart
     removeFromCart(_id) {
       const idx = this.cart.findIndex(i => i._id === _id);
       if (idx !== -1) {
@@ -112,6 +119,7 @@ createApp({
         this.cart.splice(idx, 1);
       }
     },
+    // Open cart page
     toggleCartPage() {
       this.showCartPage = !this.showCartPage;
     },
@@ -166,8 +174,8 @@ createApp({
       } else {
         alert('Please enter a valid name and 10-digit phone number before checking out.');
       }
-    }
-    ,
+    },
+    // Update Lesson with PUT
     async updateLessonSpace(lessonId, newSpace) {
       try {
         const response = await fetch(`http://localhost:5000/api/lessons/${lessonId}`, {
@@ -177,7 +185,7 @@ createApp({
         });
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Failed to update lesson');
-        console.log(`✅ Lesson ${lessonId} space updated to ${newSpace}`);
+        console.log(` Lesson ${lessonId} space updated to ${newSpace}`);
       } catch (error) {
         console.error('Error updating lesson space:', error);
       }

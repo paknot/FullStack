@@ -33,7 +33,7 @@ h1 {
   gap: 15px;
 }
 
-
+/* Sort */
 .sort-controls {
   display: flex;
   align-items: center;
@@ -62,7 +62,7 @@ h1 {
   border-color: #007bff;
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
 }
-
+/* Search */
 .search-box .search-container {
   position: relative;
   width: 280px;
