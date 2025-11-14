@@ -365,14 +365,14 @@ button:disabled {
 }
 /* Quantity button in cart */
 .quantity-controls {
+  margin-left: auto; 
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: 8px;
 }
 .qty-btn {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   font-size: 20px;
   font-weight: bold;
   border-radius: 6px;
@@ -380,7 +380,12 @@ button:disabled {
   background: #007bff;
   color: white;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
 }
+
 .qty-btn:disabled {
   background: #ccc;
 }
