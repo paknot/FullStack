@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -74,17 +75,20 @@
             </div>
             <!-- Carts contents -->
             <div v-else class="cart-content">
-                <div v-for="item in cart" :key="item.subject" class="cart-entry">
+                <div v-for="item in cart" :key="item._id" class="cart-entry">
                     <div class="cart-info">
                         <i :class="item.icon" style="color:#007bff; font-size:1.5em;"></i>
                         <strong>{{ item.subject }}</strong>
                         <span>Location: {{ item.location }}</span>
                         <span>Price: £{{ item.price }}</span>
-                        <span>Spaces Booked: {{ item.spaces }}</span>
+
+                        <!-- Quantity Controls -->
+                        <div class="quantity-controls">
+                            <button class="qty-btn" @click="decreaseItem(item)">−</button>
+                            <span class="qty-number">{{ item.spaces }}</span>
+                            <button class="qty-btn" @click="increaseItem(item)">+</button>
+                        </div>
                     </div>
-                    <button @click="removeFromCart(item._id)" class="remove-button">
-                        Remove
-                    </button>
                 </div>
                 <div class="cart-total">
                     <strong>Total Items: {{ totalCartItems }}</strong>

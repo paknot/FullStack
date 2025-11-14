@@ -124,6 +124,27 @@ createApp({
     toggleCartPage() {
       this.showCartPage = !this.showCartPage;
     },
+    // Increase items in cart
+    increaseItem(item) {
+      const lesson = this.lessons.find(l => l._id === item._id);
+      if (lesson && lesson.spaces > 0) {
+        lesson.spaces -= 1;
+        item.spaces += 1;
+      }
+    },
+    // Decrease items in cart
+    decreaseItem(item) {
+      const lesson = this.lessons.find(l => l._id === item._id);
+      if (!lesson) return;
+
+      item.spaces -= 1;
+      lesson.spaces += 1;
+
+      // Quantity  0 → remove
+      if (item.spaces <= 0) {
+        this.cart = this.cart.filter(c => c._id !== item._id);
+      }
+    },
     async submitOrder() {
       if (this.isCheckoutValid) {
         const items = this.cart.map(item => ({
