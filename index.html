@@ -81,14 +81,13 @@
                         <strong>{{ item.subject }}</strong>
                         <span>Location: {{ item.location }}</span>
                         <span>Price: £{{ item.price }}</span>
-
-                        <!-- Quantity Controls -->
+                    </div>
+                    <!-- Quantity Controls -->
                         <div class="quantity-controls">
                             <button class="qty-btn" @click="decreaseItem(item)">−</button>
                             <span class="qty-number">{{ item.spaces }}</span>
                             <button class="qty-btn" @click="increaseItem(item)">+</button>
                         </div>
-                    </div>
                 </div>
                 <div class="cart-total">
                     <strong>Total Items: {{ totalCartItems }}</strong>

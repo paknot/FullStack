@@ -243,23 +243,21 @@ button:disabled {
     flex-direction: column;
     gap: 15px;
 }
-
+/* Cart info and quantity */
 .cart-entry {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f8f9fa;
-    border: 1px solid #ddd;
-    padding: 15px 20px;
-    border-radius: 6px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  padding: 15px 20px;
+  border-radius: 6px;
+  flex-wrap: nowrap;  
 }
-
 .cart-info {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    font-size: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
 .cart-info strong {
@@ -365,10 +363,10 @@ button:disabled {
 }
 /* Quantity button in cart */
 .quantity-controls {
-  margin-left: auto; 
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-left: auto;
 }
 .qty-btn {
   width: 32px;
